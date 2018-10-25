@@ -1,7 +1,6 @@
 // Configuration des images docker utilisées pour les différentes étapes CI/CD
 pipeline {
   agent {
-    docker build -t my-app:$BUILD_NUMBER ./build/
     kubernetes {
       label 'mypod'
       defaultContainer 'jnlp'
@@ -53,6 +52,14 @@ spec:
         }
       }
     }
+    
+    stage('Docker build'){
+      steps {
+        container('docker')
+          sh 'docker build -t my-app:$BUILD_NUMBER .'
+      }
+    }
+  }
 
 }
 }
